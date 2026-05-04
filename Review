@@ -70,6 +70,16 @@
       border-radius: 8px;
     }
 
+    .correct {
+      border-left: 6px solid #2e7d32;
+      background: #e8f7e8;
+    }
+
+    .incorrect {
+      border-left: 6px solid #c62828;
+      background: #fdeaea;
+    }
+
     .answers {
       background: #eef4ff;
       padding: 10px;
@@ -79,23 +89,61 @@
       font-size: 14px;
     }
 
-    .show-btn, .submit-btn {
+    .result {
+      font-weight: bold;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .correct-text {
+      color: #2e7d32;
+    }
+
+    .incorrect-text {
+      color: #c62828;
+    }
+
+    .score-box {
+      display: none;
+      background: #fff8e1;
+      border-left: 6px solid #f9a825;
+      padding: 18px;
+      border-radius: 10px;
+      margin: 25px 0;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .submit-btn {
       background: #243b63;
       color: white;
-      padding: 10px 18px;
+      padding: 12px 24px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      margin-top: 10px;
+      margin-top: 20px;
+      font-size: 16px;
     }
 
-    .show-btn:hover, .submit-btn:hover {
+    .submit-btn:hover {
       background: #1a2d4d;
     }
 
     .button-area {
       text-align: center;
       margin-top: 30px;
+    }
+
+    .review-message {
+      display: none;
+      background: #e8f7e8;
+      border-left: 5px solid #2e7d32;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #2e7d32;
     }
 
     footer {
@@ -108,41 +156,46 @@
 </head>
 
 <body>
+
 <header>
   <h1>PART 3: WRITING</h1>
   <p>Interactive English Writing Practice</p>
 </header>
 
 <main>
-<form id="writingForm">
+  <form id="writingForm">
 
-  <section class="student-info">
-    <label>Name:
-      <input id="name" type="text" required placeholder="Enter your name">
-    </label>
+    <section class="student-info">
+      <label>Name:
+        <input id="name" type="text" required placeholder="Enter your name">
+      </label>
 
-    <label>Class:
-      <input id="className" type="text" required placeholder="11/___">
-    </label>
+      <label>Class:
+        <input id="className" type="text" required placeholder="11/___">
+      </label>
 
-    <label>Student ID:
-      <input id="studentId" type="text" required placeholder="Enter your student ID">
-    </label>
-  </section>
+      <label>Student ID:
+        <input id="studentId" type="text" required placeholder="Enter your student ID">
+      </label>
+    </section>
 
-  <h2>I. Rewrite each sentence using the given word</h2>
+    <div id="scoreBox" class="score-box"></div>
 
-  <div id="part1"></div>
+    <h2>I. Rewrite each sentence using the given word</h2>
+    <div id="part1"></div>
 
-  <h2>II. Use the given words to write complete sentences</h2>
+    <h2>II. Use the given words to write complete sentences</h2>
+    <div id="part2"></div>
 
-  <div id="part2"></div>
+    <div class="button-area">
+      <button class="submit-btn" type="submit">Submit to Teacher</button>
+    </div>
 
-  <div class="button-area">
-    <button class="submit-btn" type="submit">Submit to Teacher</button>
-  </div>
+    <div id="reviewMessage" class="review-message">
+      Submitted successfully! You can now review your results and possible answers.
+    </div>
 
-</form>
+  </form>
 </main>
 
 <footer>
@@ -155,158 +208,228 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyhOiLiokMMvQWlgPUhM
 const part1Questions = [
   {
     q: "Preserving cultural heritage is important. Many young people are not interested. (although)",
-    a1: "Although preserving cultural heritage is important, many young people are not interested.",
-    a2: "Many young people are not interested although preserving cultural heritage is important."
+    answers: [
+      "Although preserving cultural heritage is important, many young people are not interested.",
+      "Many young people are not interested although preserving cultural heritage is important."
+    ]
   },
   {
     q: "Traditional crafts are valuable. They are disappearing. (despite)",
-    a1: "Despite being valuable, traditional crafts are disappearing.",
-    a2: "Despite their value, traditional crafts are disappearing."
+    answers: [
+      "Despite being valuable, traditional crafts are disappearing.",
+      "Despite their value, traditional crafts are disappearing."
+    ]
   },
   {
     q: "She wants to become a doctor. The training is very demanding. (however)",
-    a1: "She wants to become a doctor. However, the training is very demanding.",
-    a2: "She wants to become a doctor; however, the training is very demanding."
+    answers: [
+      "She wants to become a doctor. However, the training is very demanding.",
+      "She wants to become a doctor; however, the training is very demanding."
+    ]
   },
   {
     q: "She chose a challenging career path. She wanted to follow her passion. (because)",
-    a1: "She chose a challenging career path because she wanted to follow her passion.",
-    a2: "Because she wanted to follow her passion, she chose a challenging career path."
+    answers: [
+      "She chose a challenging career path because she wanted to follow her passion.",
+      "Because she wanted to follow her passion, she chose a challenging career path."
+    ]
   },
   {
     q: "Body shaming not only creates a negative environment for students but also affects their self-confidence. (besides)",
-    a1: "Body shaming creates a negative environment for students. Besides, it affects their self-confidence.",
-    a2: "Body shaming affects students' self-confidence. Besides, it creates a negative environment for them."
+    answers: [
+      "Body shaming creates a negative environment for students. Besides, it affects their self-confidence.",
+      "Body shaming affects students' self-confidence. Besides, it creates a negative environment for them."
+    ]
   },
   {
     q: "Cyberbullying can lower students' self-confidence. They may struggle with social interactions. (As a consequence)",
-    a1: "Cyberbullying can lower students' self-confidence. As a consequence, they may struggle with social interactions.",
-    a2: "Cyberbullying may lower students' self-confidence; as a consequence, they may struggle with social interactions."
+    answers: [
+      "Cyberbullying can lower students' self-confidence. As a consequence, they may struggle with social interactions.",
+      "Cyberbullying may lower students' self-confidence; as a consequence, they may struggle with social interactions."
+    ]
   },
   {
-    q: "While some students stand up to bullying, others remain silent for fear of the consequences. (By contrast)",
-    a1: "Some students stand up to bullying. By contrast, others remain silent for fear of the consequences.",
-    a2: "Some students stand up to bullying; by contrast, others remain silent for fear of the consequences."
+    q: "While some students stand up to bullying, others remain silent for the fear of the consequences. (By contrast)",
+    answers: [
+      "Some students stand up to bullying. By contrast, others remain silent for fear of the consequences.",
+      "Some students stand up to bullying; by contrast, others remain silent for fear of the consequences."
+    ]
   },
   {
     q: "Many students skip breakfast, so they have low energy levels in the morning. (Because of)",
-    a1: "Because of skipping breakfast, many students have low energy levels in the morning.",
-    a2: "Because of the fact that many students skip breakfast, they have low energy levels in the morning."
+    answers: [
+      "Because of skipping breakfast, many students have low energy levels in the morning.",
+      "Because of the fact that many students skip breakfast, they have low energy levels in the morning."
+    ]
   },
   {
     q: "The school organizes environmental campaigns. It also encourages students to recycle. (In addition)",
-    a1: "The school organizes environmental campaigns. In addition, it encourages students to recycle.",
-    a2: "The school organizes environmental campaigns; in addition, it encourages students to recycle."
+    answers: [
+      "The school organizes environmental campaigns. In addition, it encourages students to recycle.",
+      "The school organizes environmental campaigns; in addition, it encourages students to recycle."
+    ]
   },
   {
     q: "He feels more confident now. He has practiced speaking English regularly. (since)",
-    a1: "He feels more confident now since he has practiced speaking English regularly.",
-    a2: "Since he has practiced speaking English regularly, he feels more confident now."
+    answers: [
+      "He feels more confident now since he has practiced speaking English regularly.",
+      "Since he has practiced speaking English regularly, he feels more confident now."
+    ]
   },
   {
     q: "Bullying has serious consequences. Schools must take stronger action. (therefore)",
-    a1: "Bullying has serious consequences. Therefore, schools must take stronger action.",
-    a2: "Bullying has serious consequences; therefore, schools must take stronger action."
+    answers: [
+      "Bullying has serious consequences. Therefore, schools must take stronger action.",
+      "Bullying has serious consequences; therefore, schools must take stronger action."
+    ]
   },
   {
     q: "As bullying is a pressing issue at school, it needs immediate action. (Because of)",
-    a1: "Because of being a pressing issue at school, bullying needs immediate action.",
-    a2: "Because of the pressing issue of bullying at school, it needs immediate action."
+    answers: [
+      "Because of being a pressing issue at school, bullying needs immediate action.",
+      "Because of the pressing issue of bullying at school, it needs immediate action."
+    ]
   },
   {
     q: "Although we faced many difficulties, we successfully ran an anti-bullying campaign. (In spite of)",
-    a1: "In spite of facing many difficulties, we successfully ran an anti-bullying campaign.",
-    a2: "In spite of many difficulties, we successfully ran an anti-bullying campaign."
+    answers: [
+      "In spite of facing many difficulties, we successfully ran an anti-bullying campaign.",
+      "In spite of many difficulties, we successfully ran an anti-bullying campaign."
+    ]
   },
   {
     q: "Minh asked Hung to skip class to go to the park but Hung did not agree. (however)",
-    a1: "Minh asked Hung to skip class to go to the park. However, Hung did not agree.",
-    a2: "Minh asked Hung to skip class to go to the park; however, Hung did not agree."
+    answers: [
+      "Minh asked Hung to skip class to go to the park. However, Hung did not agree.",
+      "Minh asked Hung to skip class to go to the park; however, Hung did not agree."
+    ]
   },
   {
     q: "She is highly skilled in communication. She has strong leadership abilities. (Moreover)",
-    a1: "She is highly skilled in communication. Moreover, she has strong leadership abilities.",
-    a2: "She is highly skilled in communication; moreover, she has strong leadership abilities."
+    answers: [
+      "She is highly skilled in communication. Moreover, she has strong leadership abilities.",
+      "She is highly skilled in communication; moreover, she has strong leadership abilities."
+    ]
   }
 ];
 
 const part2Questions = [
   {
     q: "Young people / take part / cultural activities / promote / preserve / national heritage.",
-    a1: "Young people should take part in cultural activities to promote and preserve national heritage.",
-    a2: "Young people take part in cultural activities to promote and preserve national heritage."
+    answers: [
+      "Young people should take part in cultural activities to promote and preserve national heritage.",
+      "Young people take part in cultural activities to promote and preserve national heritage."
+    ]
   },
   {
     q: "Have / finish / university, / she / decide / live independently.",
-    a1: "Having finished university, she decided to live independently.",
-    a2: "After having finished university, she decided to live independently."
+    answers: [
+      "Having finished university, she decided to live independently.",
+      "After having finished university, she decided to live independently."
+    ]
   },
   {
     q: "It / be / young people / play / important role / preserving heritage.",
-    a1: "It is young people who play an important role in preserving heritage.",
-    a2: "It is young people that play an important role in preserving heritage."
+    answers: [
+      "It is young people who play an important role in preserving heritage.",
+      "It is young people that play an important role in preserving heritage."
+    ]
   },
   {
     q: "Although / ecosystem / be fragile, / humans / continue / exploit it.",
-    a1: "Although the ecosystem is fragile, humans continue to exploit it.",
-    a2: "Although the ecosystem was fragile, humans continued to exploit it."
+    answers: [
+      "Although the ecosystem is fragile, humans continue to exploit it.",
+      "Although the ecosystem was fragile, humans continued to exploit it."
+    ]
   },
   {
     q: "He / learn / manage money / moreover / he / develop / life skills.",
-    a1: "He learns to manage money; moreover, he develops life skills.",
-    a2: "He has learned to manage money. Moreover, he has developed life skills."
+    answers: [
+      "He learns to manage money; moreover, he develops life skills.",
+      "He has learned to manage money. Moreover, he has developed life skills."
+    ]
   },
   {
     q: "It / be / government / need / take action / reduce poverty.",
-    a1: "It is the government that needs to take action to reduce poverty.",
-    a2: "It is the government who needs to take action to reduce poverty."
+    answers: [
+      "It is the government that needs to take action to reduce poverty.",
+      "It is the government who needs to take action to reduce poverty."
+    ]
   },
   {
     q: "She / be / only person / understand / this problem.",
-    a1: "She is the only person who understands this problem.",
-    a2: "She was the only person who understood this problem."
+    answers: [
+      "She is the only person who understands this problem.",
+      "She was the only person who understood this problem."
+    ]
   },
   {
     q: "He / regret / have / waste / time / when he / be / young.",
-    a1: "He regrets having wasted time when he was young.",
-    a2: "He regretted having wasted time when he was young."
+    answers: [
+      "He regrets having wasted time when he was young.",
+      "He regretted having wasted time when he was young."
+    ]
   },
   {
     q: "They / deny / have / damage / the environment / the past.",
-    a1: "They deny having damaged the environment in the past.",
-    a2: "They denied having damaged the environment in the past."
+    answers: [
+      "They deny having damaged the environment in the past.",
+      "They denied having damaged the environment in the past."
+    ]
   },
   {
     q: "In spite / face / many challenges / he / pursue / dream career.",
-    a1: "In spite of facing many challenges, he pursued his dream career.",
-    a2: "In spite of facing many challenges, he continues to pursue his dream career."
+    answers: [
+      "In spite of facing many challenges, he pursued his dream career.",
+      "In spite of facing many challenges, he continues to pursue his dream career."
+    ]
   },
   {
     q: "She / join / volunteer program / help / disadvantaged children.",
-    a1: "She joined a volunteer program to help disadvantaged children.",
-    a2: "She joins a volunteer program to help disadvantaged children."
+    answers: [
+      "She joined a volunteer program to help disadvantaged children.",
+      "She joins a volunteer program to help disadvantaged children."
+    ]
   },
   {
     q: "Have / learn / traditions, / they / feel / more responsible / protect them.",
-    a1: "Having learned about traditions, they feel more responsible for protecting them.",
-    a2: "After having learned about traditions, they felt more responsible for protecting them."
+    answers: [
+      "Having learned about traditions, they feel more responsible for protecting them.",
+      "After having learned about traditions, they felt more responsible for protecting them."
+    ]
   },
   {
     q: "Since / cultural heritage / be / important, / we / need / protect it.",
-    a1: "Since cultural heritage is important, we need to protect it.",
-    a2: "Since cultural heritage plays an important role, we need to protect it."
+    answers: [
+      "Since cultural heritage is important, we need to protect it.",
+      "Since cultural heritage plays an important role, we need to protect it."
+    ]
   },
   {
     q: "He / make / decision / move out / live independently.",
-    a1: "He made a decision to move out and live independently.",
-    a2: "He has made a decision to move out and live independently."
+    answers: [
+      "He made a decision to move out and live independently.",
+      "He has made a decision to move out and live independently."
+    ]
   },
   {
     q: "They / apologize / have / treat / others unfairly.",
-    a1: "They apologized for having treated others unfairly.",
-    a2: "They apologize for having treated others unfairly."
+    answers: [
+      "They apologized for having treated others unfairly.",
+      "They apologize for having treated others unfairly."
+    ]
   }
 ];
+
+const allQuestions = [...part1Questions, ...part2Questions];
+
+function normalizeText(text) {
+  return text
+    .toLowerCase()
+    .replace(/[.,;:!?]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
 function createQuestions(list, containerId, startNumber) {
   const container = document.getElementById(containerId);
@@ -316,27 +439,22 @@ function createQuestions(list, containerId, startNumber) {
 
     const div = document.createElement("div");
     div.className = "question";
+    div.id = "questionBox" + number;
 
     div.innerHTML = `
       <p><b>${number}.</b> ${item.q}</p>
-      <textarea name="answer${number}" required placeholder="Write your answer here..."></textarea>
-      <br>
-      <button type="button" class="show-btn" onclick="toggleAnswer('answerBox${number}')">
-        Show possible answers
-      </button>
-      <div class="answers" id="answerBox${number}">
-        <p><b>Possible answer 1:</b> ${item.a1}</p>
-        <p><b>Possible answer 2:</b> ${item.a2}</p>
+      <textarea id="answer${number}" name="answer${number}" required placeholder="Write your answer here..."></textarea>
+
+      <p id="result${number}" class="result"></p>
+
+      <div class="answers" id="possible${number}">
+        <p><b>Possible answer 1:</b> ${item.answers[0]}</p>
+        <p><b>Possible answer 2:</b> ${item.answers[1]}</p>
       </div>
     `;
 
     container.appendChild(div);
   });
-}
-
-function toggleAnswer(id) {
-  const box = document.getElementById(id);
-  box.style.display = box.style.display === "block" ? "none" : "block";
 }
 
 createQuestions(part1Questions, "part1", 1);
@@ -349,13 +467,44 @@ document.getElementById("writingForm").addEventListener("submit", function(event
   submitButton.disabled = true;
   submitButton.textContent = "Submitting...";
 
-  const answers = Array.from(document.querySelectorAll("textarea")).map(textarea => textarea.value);
+  let score = 0;
+  const studentAnswers = [];
+
+  allQuestions.forEach((item, index) => {
+    const number = index + 1;
+    const studentAnswer = document.getElementById("answer" + number).value;
+    studentAnswers.push(studentAnswer);
+
+    const normalizedStudentAnswer = normalizeText(studentAnswer);
+    const normalizedCorrectAnswers = item.answers.map(answer => normalizeText(answer));
+
+    const isCorrect = normalizedCorrectAnswers.includes(normalizedStudentAnswer);
+
+    const questionBox = document.getElementById("questionBox" + number);
+    const resultText = document.getElementById("result" + number);
+    const possibleBox = document.getElementById("possible" + number);
+
+    possibleBox.style.display = "block";
+    resultText.style.display = "block";
+
+    if (isCorrect) {
+      score++;
+      questionBox.classList.add("correct");
+      resultText.innerHTML = "Correct ✔";
+      resultText.className = "result correct-text";
+    } else {
+      questionBox.classList.add("incorrect");
+      resultText.innerHTML = "Incorrect ✘";
+      resultText.className = "result incorrect-text";
+    }
+  });
 
   const data = {
     name: document.getElementById("name").value,
     className: document.getElementById("className").value,
     studentId: document.getElementById("studentId").value,
-    answers: answers
+    score: score + "/" + allQuestions.length,
+    answers: studentAnswers
   };
 
   fetch(SCRIPT_URL, {
@@ -367,17 +516,25 @@ document.getElementById("writingForm").addEventListener("submit", function(event
     body: JSON.stringify(data)
   })
   .then(() => {
-    alert("Submitted successfully!");
-    document.getElementById("writingForm").reset();
+    const scoreBox = document.getElementById("scoreBox");
+    scoreBox.style.display = "block";
+    scoreBox.innerHTML = `Your score: ${score} / ${allQuestions.length}`;
 
-    document.querySelectorAll(".answers").forEach(box => {
-      box.style.display = "none";
+    document.getElementById("reviewMessage").style.display = "block";
+
+    document.querySelectorAll("textarea, input").forEach(field => {
+      field.readOnly = true;
+    });
+
+    submitButton.style.display = "none";
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
     });
   })
   .catch(() => {
     alert("Error submitting. Please try again.");
-  })
-  .finally(() => {
     submitButton.disabled = false;
     submitButton.textContent = "Submit to Teacher";
   });
