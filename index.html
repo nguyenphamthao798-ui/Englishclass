@@ -500,12 +500,12 @@ document.getElementById("writingForm").addEventListener("submit", function(event
   });
 
   const data = {
-    name: document.getElementById("name").value,
-    className: document.getElementById("className").value,
-    studentId: document.getElementById("studentId").value,
-    score: score + "/" + allQuestions.length,
-    answers: studentAnswers
-  };
+  name: document.getElementById("name").value,
+  className: document.getElementById("className").value,
+  studentId: document.getElementById("studentId").value,
+  score: score + "/" + allQuestions.length,
+  answers: studentAnswers
+};
 
   fetch(SCRIPT_URL, {
     method: "POST",
