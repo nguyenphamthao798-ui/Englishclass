@@ -152,6 +152,25 @@
       color: #666;
       font-size: 14px;
     }
+    .data-box {
+  display: none;
+  background: #eef4ff;
+  border-left: 6px solid #243b63;
+  padding: 15px;
+  border-radius: 10px;
+  margin: 25px 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.data-box pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
   </style>
 </head>
 
@@ -180,6 +199,7 @@
     </section>
 
     <div id="scoreBox" class="score-box"></div>
+    <div id="dataBox" class="data-box"></div> 
 
     <h2>I. Rewrite each sentence using the given word</h2>
     <div id="part1"></div>
@@ -505,6 +525,18 @@ document.getElementById("writingForm").addEventListener("submit", function(event
   studentId: document.getElementById("studentId").value,
   score: score + "/" + allQuestions.length,
   answers: studentAnswers
+};
+
+const dataBox = document.getElementById("dataBox");
+dataBox.style.display = "block";
+dataBox.innerHTML = `
+  <h3>Submitted Data</h3>
+  <p><b>Name:</b> ${data.name}</p>
+  <p><b>Class:</b> ${data.className}</p>
+  <p><b>Student ID:</b> ${data.studentId}</p>
+  <p><b>Score:</b> ${data.score}</p>
+  <pre>${JSON.stringify(data, null, 2)}</pre>
+`;
 };
 
   fetch(SCRIPT_URL, {
